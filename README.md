@@ -1,6 +1,6 @@
-# Deep Learning Laboratory
+# CS3807: Deep Learning Laboratory
 
-This repository contains all the lab assignments and experiments for the Deep Learning Laboratory course 2026-27 at Shiv Nadar University.
+This repository contains all the lab assignments and experiments for the Deep Learning Laboratory course 2026-27 at Shiv Nadar University, Chennai.
 
 ## Repository Structure
 
