@@ -8,7 +8,7 @@ The project is structured on a weekly basis. Each folder corresponds to a specif
 
 ### Assignments
 
-- **`1-single_layer_perceptron/`**: Week 1 - Implementation of a Single Layer Perceptron from scratch for binary classification using the Banknote Authentication Dataset.
+- **`1-single_layer_perceptron/`**: Week 1 - Implementation of a Single Layer Perceptron from scratch for binary classification using the Banknote Authentication Dataset. The experiment also includes the additional task of implementing the perceptron learning algorithm for the OR, AND, and NOT logic gates, along with decision boundary visualizations.
 - *(Future weekly assignments will be appended here in their respective numbered folders)*
 
 ## Standard Folder Layout
@@ -23,4 +23,16 @@ Inside each assignment folder, you will typically find:
 
 ## Getting Started
 
-To run an experiment, simply navigate into the specific week's directory, install the required packages using its `requirements.txt`, and follow its local `README.md` execution instructions.
+To run an experiment:
+
+1. Navigate to the corresponding experiment directory.
+
+2. Install the required Python packages:
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. Open the relevant Jupyter notebook(s) and execute all cells.
+
+4. Refer to the experiment-specific `README.md` for detailed execution instructions and project information.
