@@ -9,6 +9,7 @@ The project is structured on a weekly basis. Each folder corresponds to a specif
 ### Assignments
 
 - **`1-single_layer_perceptron/`**: Week 1 - Implementation of a Single Layer Perceptron from scratch for binary classification using the Banknote Authentication Dataset. The experiment also includes the additional task of implementing the perceptron learning algorithm for the OR, AND, and NOT logic gates, along with decision boundary visualizations.
+- **`2-multi_layer_perceptron/`**: Week 2 – Implementation of a Multi-Layer Perceptron (MLP) using TensorFlow/Keras for multi-class image classification on the Fashion-MNIST dataset. The experiment also includes automated hyperparameter optimization using Randomized Search with SciKeras and an additional task implementing a Multi-Layer Perceptron from scratch using NumPy and backpropagation to solve the XOR logic gate, along with decision boundary visualizations.
 - *(Future weekly assignments will be appended here in their respective numbered folders)*
 
 ## Standard Folder Layout
