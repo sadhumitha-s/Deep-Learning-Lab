@@ -14,7 +14,6 @@ The notebook uses an ImageNet-pretrained ResNet50 convolutional base, adds a sma
 ├── resnet50.ipynb
 └── images/
     ├── accuracy_plot.png
-    ├── cnn_architecture.png
     ├── confusion_matrix.png
     ├── finetune_accuracy_plot.png
     ├── finetune_loss_plot.png
@@ -32,13 +31,13 @@ The current notebook is:
 resnet50.ipynb
 ```
 
-It contains 21 cells and performs the following workflow:
+It performs the following workflow:
 
 1. Imports TensorFlow, NumPy, Matplotlib, scikit-learn metrics, Seaborn, OS utilities, and archive utilities.
 2. Creates the `images/` output directory if it does not already exist.
 3. Checks whether TensorFlow detects a GPU.
 4. Downloads and loads CIFAR-10 with `tf.keras.datasets.cifar10`.
-5. Normalizes images from `[0, 255]` to `[0, 1]`.
+5. Resizes images to 128x128 and normalizes them with ResNet50 preprocessing.
 6. One-hot encodes labels for categorical crossentropy training.
 7. Saves a sample image grid to `images/sample_images.png`.
 8. Builds a ResNet50 transfer-learning classifier.
@@ -50,8 +49,7 @@ It contains 21 cells and performs the following workflow:
 14. Saves a confusion matrix and misclassified-image examples.
 15. Runs a small hyperparameter comparison across learning rate, batch size, optimizer, dense layer size, and frozen-layer strategy.
 16. Saves the hyperparameter comparison plot.
-17. Generates a model architecture diagram with `tf.keras.utils.plot_model`.
-18. Creates an `images.zip` archive from the generated images.
+17. Creates an `images.zip` archive from the generated images.
 
 ## Dataset
 
@@ -77,16 +75,10 @@ The main classifier is built with:
 - `tf.keras.applications.ResNet50`
 - ImageNet pretrained weights
 - `include_top=False`
-- `input_shape=(32, 32, 3)`
+- `input_shape=(128, 128, 3)`
 - `GlobalAveragePooling2D`
 - `Dense(256, activation="relu")`
 - `Dense(10, activation="softmax")`
-
-The notebook saves the architecture diagram to:
-
-```text
-images/cnn_architecture.png
-```
 
 ## Training Procedure
 
@@ -105,9 +97,9 @@ Settings:
 - Optimizer: Adam
 - Learning rate: `0.001`
 - Loss: categorical crossentropy
-- Batch size: `32`
-- Epochs: `10`
-- Validation data: CIFAR-10 test set
+- Batch size: `64`
+- Epochs: `8` (maximum, with early stopping patience=2)
+- Validation data: 5,000 images held out from the training set
 
 ### Phase 2: Partial Fine-Tuning
 
@@ -124,56 +116,36 @@ Settings:
 - Optimizer: Adam
 - Learning rate: `0.0001`
 - Loss: categorical crossentropy
-- Batch size: `32`
-- Epochs: `5`
-- Validation data: CIFAR-10 test set
+- Batch size: `64`
+- Epochs: `4`
+- Validation data: 5,000 images held out from the training set
 
 ## Recorded Results
 
 The current notebook output reports this final evaluation after fine-tuning:
 
 ```text
-Accuracy:  0.2929
-Precision: 0.3532
-Recall:    0.2929
-F1-score:  0.2382
+Accuracy:  0.9067
+Precision: 0.91
+Recall:    0.91
+F1-score:  0.91
 ```
 
-The final recorded test accuracy is approximately 29.29%.
+The final recorded test accuracy is approximately 90.67%.
 
-The frozen-base training phase reached a best recorded validation accuracy of approximately 40.54% at epoch 8. The fine-tuning phase improved training accuracy but reduced validation accuracy in the recorded run, which suggests overfitting or an unstable fine-tuning setup.
+The frozen-base training phase reached a best recorded validation accuracy of approximately 89.18% at epoch 4 before early stopping. The fine-tuning phase further improved validation accuracy to a peak of 90.82%.
 
 ## Hyperparameter Study
 
-The notebook includes a compact hyperparameter study through the helper function:
+The notebook includes a compact hyperparameter study (using short 2-epoch experiments). The tested settings and recorded validation accuracies are:
 
-```python
-train_config(lr=0.001, batch=32, opt='adam', dense=256, trainable=False, epochs=3)
-```
-
-Each configuration trains a fresh ResNet50-based model for 3 epochs and records final validation accuracy. The tested settings are:
-
-- Learning rates: `0.001`, `0.0001`
-- Batch sizes: `16`, `32`, `64`
-- Optimizers: Adam, SGD
-- Dense units: `128`, `256`
-- Frozen strategy: fully frozen base vs partially trainable final layers
-
-Recorded validation accuracies:
-
-| Study | Setting | Validation Accuracy |
-| --- | ---: | ---: |
-| Learning rate | `0.001` | 0.3571 |
-| Learning rate | `0.0001` | 0.3468 |
-| Batch size | `16` | 0.3412 |
-| Batch size | `32` | 0.3351 |
-| Batch size | `64` | 0.3330 |
-| Optimizer | Adam | 0.3226 |
-| Optimizer | SGD | 0.2118 |
-| Dense units | `128` | 0.3275 |
-| Dense units | `256` | 0.3293 |
-| Frozen layers | Fully frozen base | 0.3646 |
-| Frozen layers | Partially trainable final layers | 0.2265 |
+| Hyperparameter | Values | Observation |
+| --- | --- | --- |
+| Learning Rate | `0.001`, `0.0001` | `0.0001` performed slightly better (88.08% vs. 87.96%) |
+| Batch Size | `32`, `64` | `32` performed slightly better (88.62% vs. 88.08%) |
+| Optimizer | Adam, SGD | Adam slightly outperformed SGD (88.20% vs. 87.86%) |
+| Dense Units | `128`, `256` | `128` dense units marginally outperformed `256` units (88.76% vs. 88.28%) |
+| Frozen Layers | All Frozen, Partial | Partial unfreezing (fine-tuning) noticeably improved validation accuracy (90.24% vs. 88.74%) |
 
 The plot is saved to:
 
@@ -195,7 +167,6 @@ The notebook writes the following visual outputs to `images/`:
 | `images/confusion_matrix.png` | Confusion matrix over the CIFAR-10 test set |
 | `images/misclassified_images.png` | Ten examples of incorrect predictions |
 | `images/hyperparameter_study.png` | Bar charts comparing hyperparameter settings |
-| `images/cnn_architecture.png` | Keras model architecture diagram |
 
 The final notebook cell creates:
 
@@ -244,29 +215,6 @@ resnet50.ipynb
 
 Run the cells from top to bottom.
 
-## Graphviz Requirement for Architecture Plot
-
-The notebook uses:
-
-```python
-tf.keras.utils.plot_model(...)
-```
-
-This requires the Python package `pydot`, which is included in `requirements.txt`. It may also require the Graphviz system executable.
-
-On macOS with Homebrew:
-
-```bash
-brew install graphviz
-```
-
-On Ubuntu/Debian:
-
-```bash
-sudo apt-get install graphviz
-```
-
-If Graphviz is missing, training and evaluation can still run, but the architecture image generation cell may fail.
 
 ## Hardware Notes
 
