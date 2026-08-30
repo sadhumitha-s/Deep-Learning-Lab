@@ -80,6 +80,22 @@ The main classifier is built with:
 - `Dense(256, activation="relu")`
 - `Dense(10, activation="softmax")`
 
+```mermaid
+graph TD
+    A["Input Image (128x128x3)"] --> B["ResNet50 Base (ImageNet Weights)"]
+    B --> C["GlobalAveragePooling2D"]
+    C --> D["Dense Layer (256 units, ReLU)"]
+    D --> E["Dense Output (10 units, Softmax)"]
+    
+    classDef input fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
+    classDef base fill:#fff3e0,stroke:#e65100,stroke-width:2px;
+    classDef head fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px;
+    
+    class A input;
+    class B base;
+    class C,D,E head;
+```
+
 ## Training Procedure
 
 ### Phase 1: Frozen ResNet50 Base

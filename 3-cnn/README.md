@@ -225,26 +225,20 @@ tensorflow.keras.datasets.cifar10
 
 Implemented CNN structure:
 
-```
-Input Image
-      |
-Conv2D (32 filters, 3x3 kernel)
-      |
-MaxPooling
-      |
-Conv2D (64 filters, 3x3 kernel)
-      |
-MaxPooling
-      |
-Conv2D (128 filters, 3x3 kernel)
-      |
-Flatten
-      |
-Dense Layer
-      |
-Dropout
-      |
-Softmax Output Layer
+```mermaid
+graph TD
+    A["Input Image (32x32x3)"] --> B["Conv2D (32 filters, 3x3 kernel, ReLU)"]
+    B --> C["MaxPooling2D"]
+    C --> D["Conv2D (64 filters, 3x3 kernel, ReLU)"]
+    D --> E["MaxPooling2D"]
+    E --> F["Conv2D (128 filters, 3x3 kernel, ReLU)"]
+    F --> G["Flatten"]
+    G --> H["Dense Layer (ReLU)"]
+    H --> I["Dropout"]
+    I --> J["Dense Output (Softmax, 10 classes)"]
+    
+    classDef layer fill:#f9f9f9,stroke:#333,stroke-width:1px;
+    class A,B,C,D,E,F,G,H,I,J layer;
 ```
 
 ---

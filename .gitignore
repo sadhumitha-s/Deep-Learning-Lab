@@ -6,6 +6,7 @@ venv/
 .venv/
 env/
 .env/
+tf-venv/
 
 # Python Cache
 __pycache__/
@@ -18,6 +19,3 @@ __pycache__/
 .idea/
 .vscode/
 
-# Datasets and Outputs (uncomment if you want to ignore them globally)
-# */data/
-# */images/
