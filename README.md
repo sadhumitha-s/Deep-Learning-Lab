@@ -18,6 +18,8 @@ The project is structured on a weekly basis. Each folder corresponds to a specif
 
 * **`4-resnet50/`**: Week 4 – ResNet50 transfer learning and fine-tuning using TensorFlow/Keras for CIFAR-10 classification, including hyperparameter analysis and model evaluation.
 
+* **`5-mobilenetv2-cnn-study/`**: Week 5 – MobileNetV2 transfer learning and CNN study using the Oxford-IIIT Pet dataset, including hyperparameter analysis, feature extraction, fine-tuning, 5-fold stratified cross-validation, and final model evaluation.
+
 - *(Future weekly assignments will be appended here in their respective numbered folders)*
 
 ## Standard Folder Layout
